@@ -1,0 +1,37 @@
+version: '3.3'
+services:
+  mariadb:
+   image: mariadb:10.2
+   ports:
+     - "3306:3306"
+   volumes: 
+     - /var/lib/mysql
+     - /DATA/:/tmp/cache 
+   environment:
+     - MYSQL_ROOT_PASSWORD=620315a   
+     - MYSQL_USER=sskim
+     - MYSQL_PASSWORD=620315a
+  adminer:
+   build:
+     context: /DOCKER/dockerfile
+     dockerfile: dockerfile
+   ports:
+     - "8080:8080"
+   depends_on:
+     - mariadb
+   links:
+     - mariadb:db
+
+  nginx:
+   build:
+     context: /DOCKER/dockerfile/nginx
+     dockerfile: Dockerfile
+   ports: 
+     - "8000:8000"
+  apache:
+   build:
+     context: /DOCKER/dockerfile/apache
+     dockerfile: Dockerfile
+   ports:
+     - "8001:8001"
+  
